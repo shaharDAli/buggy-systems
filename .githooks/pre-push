@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Git supplies one line per update, including branch deletions.
+while read -r local_ref local_oid remote_ref remote_oid; do
+    case "$remote_ref" in
+        refs/heads/main|refs/heads/master)
+            printf 'Push blocked: %s is protected. Use a pull request for changes.\n' "$remote_ref" >&2
+            exit 1
+            ;;
+    esac
+done
