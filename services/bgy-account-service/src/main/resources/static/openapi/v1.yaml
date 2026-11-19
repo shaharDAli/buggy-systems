@@ -1,0 +1,44 @@
+openapi: 3.1.0
+info:
+  title: Buggy Customer Identity
+  version: 1.0.0
+paths:
+  /actuator/health:
+    get:
+      operationId: getHealth
+      summary: Check application health
+      responses:
+        '200':
+          $ref: '#/components/responses/Health'
+        '503':
+          $ref: '#/components/responses/Health'
+  /actuator/health/liveness:
+    get:
+      operationId: getLiveness
+      summary: Check whether the process is live
+      responses:
+        '200':
+          $ref: '#/components/responses/Health'
+        '503':
+          $ref: '#/components/responses/Health'
+  /actuator/health/readiness:
+    get:
+      operationId: getReadiness
+      summary: Check whether the service is ready for traffic
+      responses:
+        '200':
+          $ref: '#/components/responses/Health'
+        '503':
+          $ref: '#/components/responses/Health'
+components:
+  responses:
+    Health:
+      description: Current health status
+      content:
+        application/vnd.spring-boot.actuator.v3+json:
+          schema:
+            type: object
+            required: [status]
+            properties:
+              status:
+                type: string
