@@ -7,7 +7,7 @@ C4 Level 3 · `bgy-order-service`
 ```mermaid
 flowchart LR
     buggy["Buggy<br/>Flutter app"]
-    portal["Buggy Portal<br/>Flutter web and app"]
+    portal["Buggy Portal<br/>React web app"]
 
     subgraph orderService["bgy-order-service"]
         api["Order API<br/>Handles order requests and queries"]

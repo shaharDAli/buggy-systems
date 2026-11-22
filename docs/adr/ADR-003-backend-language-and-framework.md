@@ -19,7 +19,7 @@
 
 Use **Java 21 and Spring Boot** for Customer / Identity, Restaurant Catalog, Order Management, Payments, and Delivery & Logistics. At implementation time, choose a supported Spring Boot release that supports Java 21 and pin the version in each service build.
 
-Spring Boot gives all five services a common approach to HTTP APIs, security, validation, and observability. For Order Management, use transaction support appropriate to its data store so the delivery transition and outbox entry commit together. Use each service's own storage client where appropriate. Document service interfaces with OpenAPI so the Flutter apps and other services can integrate through versioned contracts.
+Spring Boot gives all five services a common approach to HTTP APIs, security, validation, and observability. For Order Management, use transaction support appropriate to its data store so the delivery transition and outbox entry commit together. Use each service's own storage client where appropriate. Document service interfaces with OpenAPI so frontend apps and other services can integrate through versioned contracts.
 
 ## Consequences and review triggers
 

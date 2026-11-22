@@ -11,7 +11,7 @@ flowchart LR
     subgraph buggySystem["Buggy"]
         subgraph frontends["Frontends"]
             buggy["Buggy<br/>Flutter app<br/>Browse restaurants, place orders,<br/>pay, and track order status"]
-            portal["Buggy Portal<br/>Flutter web and app<br/>Register restaurants, manage menus,<br/>and update order preparation"]
+            portal["Buggy Portal<br/>React web app<br/>Register restaurants, manage menus,<br/>and update order preparation"]
             delivery["Buggy Delivery Partner<br/>Flutter app<br/>Claim pickups and<br/>update delivery status"]
         end
 
