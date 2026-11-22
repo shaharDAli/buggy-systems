@@ -21,3 +21,15 @@ management:
       probes:
         enabled: true
       show-details: never
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "!postgres"
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+  flyway:
+    enabled: false

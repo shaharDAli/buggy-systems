@@ -28,8 +28,14 @@ curl http://localhost:8083/openapi/v1.yaml
 
 OpenTelemetry tracing is wired through Spring Boot. Set `MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT` to the deployment's OTLP HTTP trace endpoint to export spans.
 
+## PostgreSQL migrations
+
+Each service includes Flyway and the PostgreSQL JDBC driver. To run a service with its database, set `SPRING_PROFILES_ACTIVE=postgres` and supply `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, and `SPRING_DATASOURCE_PASSWORD` for its provisioned database from the table above. For example, the Order service can use `jdbc:postgresql://localhost:5432/bgy-order-db`. The default startup mode runs without a database.
+
+Flyway applies versioned SQL on startup from the owning service's `src/main/resources/db/migration` directory. Name the first schema migration `V1__initial_schema.sql`.
+
 ## Domain implementation
 
-The scaffold starts without external services. Business APIs, identity issuance and verification, storage clients, and database migrations are future work. Keep migrations in the service that owns the corresponding data store and define inter-service APIs in each service's OpenAPI document as those routes are implemented.
+Business APIs, identity issuance and verification, storage clients, and initial domain schemas are future work. Define inter-service APIs in each service's OpenAPI document as those routes are implemented.
 
 For the order-to-payout flow, Order Management owns the delivery transition and must commit it with the payout request in a local transaction through a durable outbox. Payments owns Razorpay webhook verification, idempotency, separate payout records per recipient, and reconciliation before retrying ambiguous transfers.
