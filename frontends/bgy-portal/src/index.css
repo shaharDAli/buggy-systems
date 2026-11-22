@@ -1,0 +1,38 @@
+:root {
+  font-family: system-ui, sans-serif;
+  background: #f2f7f5;
+  color: #16332d;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  max-width: 48rem;
+  margin-inline: auto;
+  padding: clamp(1.25rem, 5vw, 4rem);
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1.1;
+}
+
+ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 0.75rem;
+  padding: 0;
+  margin-block: 1.5rem 0;
+  list-style: none;
+}
+
+li {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #c9dad4;
+  border-radius: 0.5rem;
+}
