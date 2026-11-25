@@ -40,7 +40,7 @@ flowchart TB
 
 ## Restaurant Catalog
 
-`bgy-rest-catalog-service` · `bgy-menu-fb`
+`bgy-rest-catalog-service` · `bgy-menu-db`
 
 ```mermaid
 flowchart TB

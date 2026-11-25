@@ -26,7 +26,7 @@ flowchart LR
         subgraph databases["Data stores"]
             accountDb[("bgy-account-db<br/>PostgreSQL<br/>Sign-in accounts, customer profiles,<br/>and saved addresses")]
             orderDb[("bgy-order-db<br/>Orders, items, status,<br/>and checkout address")]
-            menuDb[("bgy-menu-fb<br/>Restaurants, menus, availability,<br/>and restaurant staff memberships")]
+            menuDb[("bgy-menu-db<br/>Restaurants, menus, availability,<br/>and restaurant staff memberships")]
             deliveryDb[("bgy-delivery-db<br/>Delivery jobs, partner profiles,<br/>vehicles, availability, and location")]
             paymentDb[("bgy-payment-db<br/>Customer payments and payout records")]
         end
@@ -91,7 +91,7 @@ Each context owns its model and writes to its own data store. This design maps e
 
 | Context | System of record | Model and responsibilities |
 | --- | --- | --- |
-| Restaurant Catalog | `bgy-menu-fb` | Owns the `Restaurant` aggregate and models menus, items, categories, address, operating hours, prices, and dietary tags. Owns staff memberships linking a sign-in identity to a restaurant and its staff permissions. |
+| Restaurant Catalog | `bgy-menu-db` | Owns the `Restaurant` aggregate and models menus, items, categories, address, operating hours, prices, and dietary tags. Owns staff memberships linking a sign-in identity to a restaurant and its staff permissions. |
 | Order Management | `bgy-order-db` | Owns the `Order` aggregate, its `OrderItem` entities, status, delivery address, and total. At placement, the service checks Catalog for restaurant open status. The order enforces the edit cutoff when preparation starts. |
 | Delivery & Logistics | `bgy-delivery-db` | Owns the `DeliveryJob` aggregate, tracking, delivery status, and ETA. Models `DeliveryPartner` as a separate aggregate because availability, location, and vehicle data persist across jobs. The assignment operation verifies that the partner is available and within 3 km of the pickup before assigning the job. |
 | Customer / Identity | `bgy-account-db` | Owns authentication for all three roles and the `Customer` aggregate with `CustomerProfile`, `SavedAddress`, and `ContactNumber`. |

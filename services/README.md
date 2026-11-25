@@ -5,7 +5,7 @@ The five services follow [ADR 001](../docs/adr/ADR-001-backend-architecture.md) 
 | Service | Local port | Data store | Owns |
 | --- | --- | --- | --- |
 | [Customer / Identity](bgy-account-service) | 8081 | `bgy-account-db` | Sign-in, identity IDs, customer profiles, and saved addresses |
-| [Restaurant Catalog](bgy-rest-catalog-service) | 8082 | `bgy-menu-fb` | Restaurants, staff memberships, menus, pricing, hours, and availability |
+| [Restaurant Catalog](bgy-rest-catalog-service) | 8082 | `bgy-menu-db` | Restaurants, staff memberships, menus, pricing, hours, and availability |
 | [Order Management](bgy-order-service) | 8083 | `bgy-order-db` | Orders, line items, checkout address snapshots, and order status |
 | [Payments](bgy-payment-service) | 8084 | `bgy-payment-db` | Razorpay integration, payment records, and recipient payouts |
 | [Delivery & Logistics](bgy-logistics-service) | 8085 | `bgy-delivery-db` | Delivery jobs, partners, vehicles, assignment, and tracking |
@@ -16,7 +16,7 @@ With JDK 21 and Maven 3.9 installed, run these commands from the repository root
 
 ```sh
 mvn -f services/bgy-order-service/pom.xml verify
-java -jar services/bgy-order-service/target/bgy-order-service-0.1.0-SNAPSHOT.jar
+java -jar services/bgy-order-service/target/bgy-order-service-0.1.0.jar
 ```
 
 Each service exposes `GET /actuator/health`, `GET /actuator/health/liveness`, and `GET /actuator/health/readiness`. Readiness currently reports application availability. The versioned OpenAPI document at `/openapi/v1.yaml` describes those probes. Local development uses HTTP. Deploy behind an HTTPS ingress for external access. Spring Security allows GET requests to the probes and document and denies other requests.

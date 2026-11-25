@@ -14,7 +14,7 @@ Deploy five backend services. Each service owns its data and migrations. Other s
 | Service | Owns | Why this boundary |
 | --- | --- | --- |
 | Customer / Identity (`bgy-account-service`) | Sign-in for all three apps, stable identity IDs, customer profiles, and saved addresses in `bgy-account-db`. | All three apps share a sign-in model. Catalog and Logistics own permissions and records specific to their domains. |
-| Restaurant Catalog (`bgy-rest-catalog-service`) | Restaurant onboarding, staff memberships, menus, prices, hours, and availability in `bgy-menu-fb`. | Restaurant staff manage these records together. Order Management uses them when validating orders and staff access. |
+| Restaurant Catalog (`bgy-rest-catalog-service`) | Restaurant onboarding, staff memberships, menus, prices, hours, and availability in `bgy-menu-db`. | Restaurant staff manage these records together. Order Management uses them when validating orders and staff access. |
 | Order Management (`bgy-order-service`) | Orders, line items, checkout address snapshots, and order status in `bgy-order-db`. | A single service enforces order transitions from placement through delivery. |
 | Payments (`bgy-payment-service`) | Razorpay integration, customer payments, and restaurant and delivery partner payouts in `bgy-payment-db`. | One service owns provider webhooks, transaction records, and reconciliation. |
 | Delivery & Logistics (`bgy-logistics-service`) | Delivery jobs, partner profiles, vehicles, availability, assignment, and tracking in `bgy-delivery-db`. | Assignment depends on partner availability and location. Tracking can scale independently of order processing. |
