@@ -1,0 +1,173 @@
+<div id="buggy-home-concepts" class="viz-carousel" aria-label="Buggy homepage concepts">
+  <section class="buggy-page buggy-directory" data-variant="App directory" aria-label="App directory concept">
+    <header class="buggy-header">
+      <span class="buggy-brand"><span aria-hidden="true"><i data-lucide="route"></i></span>Buggy</span>
+    </header>
+    <main class="buggy-main">
+      <div class="buggy-intro">
+        <h1>Find your Buggy app.</h1>
+        <p>Order food, run your restaurant, or deliver with Buggy.</p>
+      </div>
+      <div class="buggy-apps">
+        <article class="buggy-app">
+          <div class="buggy-icon buggy-food" aria-hidden="true"><i data-lucide="utensils"></i></div>
+          <div class="buggy-app-copy">
+            <p class="buggy-role">Customers · Android &amp; iOS</p>
+            <h2>Buggy</h2>
+            <p>Browse restaurants, order food, and track your delivery.</p>
+          </div>
+          <button type="button" class="buggy-action" data-destination="customer">Get Buggy <span aria-hidden="true">↗</span></button>
+        </article>
+        <article class="buggy-app">
+          <div class="buggy-icon buggy-store" aria-hidden="true"><i data-lucide="store"></i></div>
+          <div class="buggy-app-copy">
+            <p class="buggy-role">Restaurant teams · Web</p>
+            <h2>Buggy Portal</h2>
+            <p>Update your menu, accept orders, and manage preparation.</p>
+          </div>
+          <button type="button" class="buggy-action" data-destination="portal">Open Buggy Portal <span aria-hidden="true">↗</span></button>
+        </article>
+        <article class="buggy-app">
+          <div class="buggy-icon buggy-courier" aria-hidden="true"><i data-lucide="bike"></i></div>
+          <div class="buggy-app-copy">
+            <p class="buggy-role">Couriers · Android &amp; iOS</p>
+            <h2>Buggy Delivery Partner</h2>
+            <p>Find available pickups and update delivery progress.</p>
+          </div>
+          <button type="button" class="buggy-action" data-destination="delivery">Get Delivery Partner <span aria-hidden="true">↗</span></button>
+        </article>
+      </div>
+      <p class="buggy-feedback" role="status"></p>
+    </main>
+  </section>
+  <section class="buggy-page buggy-customer-first" data-variant="Customer first" aria-label="Customer-first concept" hidden>
+    <header class="buggy-header">
+      <span class="buggy-brand"><span aria-hidden="true"><i data-lucide="route"></i></span>Buggy</span>
+    </header>
+    <main class="buggy-main">
+      <div class="buggy-feature">
+        <div>
+          <p class="buggy-role">Buggy · Android &amp; iOS</p>
+          <h1>Order food with Buggy.</h1>
+          <p>Browse restaurants, place an order, and follow it to your door.</p>
+          <button type="button" class="buggy-action" data-destination="customer">Get Buggy <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="buggy-feature-art" aria-hidden="true">
+          <span><i data-lucide="utensils"></i></span>
+        </div>
+      </div>
+      <div class="buggy-partners">
+        <article class="buggy-partner">
+          <div class="buggy-icon buggy-store" aria-hidden="true"><i data-lucide="store"></i></div>
+          <div class="buggy-app-copy">
+            <p class="buggy-role">Restaurant teams · Web</p>
+            <h2>Buggy Portal</h2>
+            <p>Manage menus and incoming orders.</p>
+            <button type="button" class="buggy-action" data-destination="portal">Open Buggy Portal <span aria-hidden="true">↗</span></button>
+          </div>
+        </article>
+        <article class="buggy-partner">
+          <div class="buggy-icon buggy-courier" aria-hidden="true"><i data-lucide="bike"></i></div>
+          <div class="buggy-app-copy">
+            <p class="buggy-role">Couriers · Android &amp; iOS</p>
+            <h2>Buggy Delivery Partner</h2>
+            <p>Find pickups and manage deliveries.</p>
+            <button type="button" class="buggy-action" data-destination="delivery">Get Delivery Partner <span aria-hidden="true">↗</span></button>
+          </div>
+        </article>
+      </div>
+      <p class="buggy-feedback" role="status"></p>
+    </main>
+  </section>
+</div>
+
+<style>
+  #buggy-home-concepts .buggy-page {
+    color-scheme: light dark;
+    --paper: light-dark(#f8faf5, #151c19);
+    --panel: light-dark(#fff, #1e2924);
+    --ink: light-dark(#122d24, #edf7ef);
+    --subtle: light-dark(#485c52, #b5c8bd);
+    --line: light-dark(#d5e2d9, #3c5044);
+    --pine: light-dark(#00584e, #9ee7cc);
+    --on-pine: light-dark(#fff, #10362a);
+    --mint: light-dark(#def3e7, #29443a);
+    --amber: light-dark(#fff0d4, #493d2c);
+    --blue: light-dark(#e4eef8, #2a3e51);
+    box-sizing: border-box;
+    min-height: 590px;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 15px/1.55 "Segoe UI", system-ui, sans-serif;
+    text-align: left;
+  }
+
+  #buggy-home-concepts .buggy-page [hidden] { display: none; }
+  #buggy-home-concepts .buggy-page :is(h1, h2, p) { margin: 0; color: inherit; }
+  #buggy-home-concepts .buggy-header { padding: 18px clamp(18px, 6%, 58px); border-bottom: 1px solid var(--line); }
+  #buggy-home-concepts .buggy-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 750; letter-spacing: -.06em; }
+  #buggy-home-concepts .buggy-brand > span { display: grid; place-items: center; width: 33px; height: 33px; border-radius: 10px; background: var(--pine); color: var(--on-pine); }
+  #buggy-home-concepts .buggy-brand svg { width: 18px; height: 18px; }
+  #buggy-home-concepts .buggy-main { max-width: 925px; margin: auto; padding: 0 clamp(18px, 6%, 58px); }
+  #buggy-home-concepts .buggy-intro { padding: clamp(28px, 5vw, 58px) 0 29px; }
+  #buggy-home-concepts .buggy-page h1 { max-width: 16ch; font-size: clamp(34px, 6vw, 62px); line-height: .99; letter-spacing: -.065em; font-weight: 760; text-wrap: balance; }
+  #buggy-home-concepts .buggy-intro > p,
+  #buggy-home-concepts .buggy-feature > div > p:not(.buggy-role) { margin-top: 14px; color: var(--subtle); font-size: 16px; }
+  #buggy-home-concepts .buggy-apps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  #buggy-home-concepts .buggy-app { display: flex; flex-direction: column; align-items: start; gap: 16px; padding: clamp(16px, 2.2vw, 25px); background: var(--panel); border: 1px solid var(--line); border-radius: 18px; }
+  #buggy-home-concepts .buggy-icon { display: grid; place-items: center; width: 47px; height: 47px; border-radius: 13px; color: var(--ink); flex: none; }
+  #buggy-home-concepts .buggy-icon svg { width: 24px; height: 24px; stroke-width: 1.7; }
+  #buggy-home-concepts .buggy-food { background: var(--mint); }
+  #buggy-home-concepts .buggy-store { background: var(--amber); }
+  #buggy-home-concepts .buggy-courier { background: var(--blue); }
+  #buggy-home-concepts .buggy-page .buggy-role { color: var(--subtle); font-size: 12px; font-weight: 650; }
+  #buggy-home-concepts .buggy-page h2 { margin: 4px 0 7px; font-size: 22px; line-height: 1.12; letter-spacing: -.035em; font-weight: 720; }
+  #buggy-home-concepts .buggy-app-copy > p:last-of-type { color: var(--subtle); }
+  #buggy-home-concepts .buggy-action { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; padding: 8px 0; border: 0; background: transparent; color: var(--pine); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+  #buggy-home-concepts .buggy-action:hover { text-decoration: underline; text-underline-offset: 4px; }
+  #buggy-home-concepts .buggy-action:focus-visible { outline: 2px solid var(--pine); outline-offset: 3px; }
+  #buggy-home-concepts .buggy-app > .buggy-action { margin-top: auto; }
+  #buggy-home-concepts .buggy-page .buggy-feedback { min-height: 46px; padding: 10px 0; box-sizing: border-box; color: var(--subtle); font-size: 13px; }
+
+  #buggy-home-concepts .buggy-feature { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: center; gap: 16px; margin-top: 24px; padding: clamp(22px, 4vw, 41px); border-radius: 20px; background: var(--mint); }
+  #buggy-home-concepts .buggy-feature h1 { margin-top: 8px; }
+  #buggy-home-concepts .buggy-feature .buggy-action { margin-top: 15px; padding-inline: 16px; border-radius: 9px; background: var(--pine); color: var(--on-pine); }
+  #buggy-home-concepts .buggy-feature-art { display: grid; place-items: center; justify-self: center; width: min(100%, 174px); aspect-ratio: 1; border: 1px dashed color-mix(in srgb, var(--pine) 45%, transparent); border-radius: 50%; }
+  #buggy-home-concepts .buggy-feature-art > span { display: grid; place-items: center; width: 63%; aspect-ratio: 1; border-radius: 36%; transform: rotate(-9deg); background: var(--pine); color: var(--on-pine); }
+  #buggy-home-concepts .buggy-feature-art svg { width: 53%; height: auto; stroke-width: 1.45; }
+  #buggy-home-concepts .buggy-partners { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+  #buggy-home-concepts .buggy-partner { display: flex; gap: 12px; padding: 15px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+  #buggy-home-concepts .buggy-partner .buggy-action { margin-top: 3px; }
+
+  @media (max-width: 670px) {
+    #buggy-home-concepts .buggy-page { min-height: 720px; }
+    #buggy-home-concepts .buggy-apps { grid-template-columns: 1fr; gap: 8px; }
+    #buggy-home-concepts .buggy-app { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 0 12px; padding: 12px; }
+    #buggy-home-concepts .buggy-app > .buggy-action { grid-column: 2; }
+    #buggy-home-concepts .buggy-partners { grid-template-columns: 1fr; gap: 8px; }
+    #buggy-home-concepts .buggy-feature { grid-template-columns: minmax(0, 1fr) minmax(56px, .32fr); }
+  }
+
+  @media (max-width: 380px) {
+    #buggy-home-concepts .buggy-page { min-height: 760px; }
+    #buggy-home-concepts .buggy-feature { grid-template-columns: 1fr; }
+    #buggy-home-concepts .buggy-feature-art { display: none; }
+  }
+</style>
+
+<script>
+  (() => {
+    const mockup = document.getElementById('buggy-home-concepts');
+    const destinations = {
+      customer: 'Buggy for Android and iOS',
+      portal: 'Buggy Portal in the browser',
+      delivery: 'Buggy Delivery Partner for Android and iOS',
+    };
+    mockup.querySelectorAll('[data-destination]').forEach((button) => {
+      const feedback = button.closest('.buggy-page').querySelector('.buggy-feedback');
+      button.addEventListener('click', () => {
+        feedback.textContent = `Preview destination: ${destinations[button.dataset.destination]}.`;
+      });
+    });
+  })();
+</script>
