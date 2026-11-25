@@ -1,0 +1,63 @@
+<main id="buggy-kitchen" aria-label="Restaurant portal home">
+  <header><b>Buggy Portal</b><span>Green Tiffin</span></header>
+  <section><h1>Orders</h1>
+    <div class="board">
+      <div data-stage="0"><h2>Incoming</h2>
+        <article><strong>#1042</strong><p>2 × Masala dosa<br>1 × Filter coffee</p><button>Accept order</button></article>
+      </div>
+      <div data-stage="1"><h2>Preparing</h2>
+        <article><strong>#1041</strong><p>1 × Idli with sambar</p><button>Mark nearly ready</button></article>
+      </div>
+      <div data-stage="2"><h2>Nearly ready</h2><p class="empty">No orders</p></div>
+      <div data-stage="3"><h2>Ready for pickup</h2><p class="empty">No orders</p></div>
+    </div>
+    <p class="update" role="status"></p>
+  </section>
+</main>
+<style>
+  #buggy-kitchen { border-radius:16px; overflow:hidden; background:light-dark(#f4f7f4,#18231e); color:light-dark(#18362c,#e4f4e9); font:15px/1.5 system-ui,sans-serif; }
+  #buggy-kitchen header { display:flex; justify-content:space-between; align-items:center; gap:12px; background:#104c40; color:#f3fffa; padding:17px 24px; }
+  #buggy-kitchen header b { font-size:20px; letter-spacing:-.04em; }
+  #buggy-kitchen section { padding:24px; }
+  #buggy-kitchen h1 { font:700 34px/1.1 system-ui; letter-spacing:-.05em; margin:0 0 22px; color:inherit; }
+  #buggy-kitchen .board { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr)); gap:14px; }
+  #buggy-kitchen [data-stage] { border-top:3px solid #8aab9a; padding-top:10px; }
+  #buggy-kitchen [data-stage="0"] { border-color:#ce8a42; }
+  #buggy-kitchen h2 { margin:0 0 12px; font:650 16px/1.3 system-ui; color:inherit; }
+  #buggy-kitchen article { padding:14px; margin-bottom:8px; background:light-dark(#fff,#28352e); border-radius:10px; border:1px solid light-dark(#d9e2da,#425548); }
+  #buggy-kitchen strong { font-size:20px; }
+  #buggy-kitchen p { margin:6px 0 12px; color:inherit; }
+  #buggy-kitchen button { width:100%; min-height:44px; border:0; border-radius:7px; background:#165c49; color:white; font:600 14px system-ui; cursor:pointer; }
+  #buggy-kitchen .empty,#buggy-kitchen .update { font-size:13px; }
+  #buggy-kitchen .update { margin:14px 0 0; }
+</style>
+<script>
+  (() => {
+    const home = document.getElementById('buggy-kitchen');
+    const stages = [...home.querySelectorAll('[data-stage]')];
+    const actions = ['Accept order','Mark nearly ready','Mark ready for pickup'];
+    home.addEventListener('click', event => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      const order = button.closest('article');
+      const origin = order.parentElement;
+      const next = Number(origin.dataset.stage) + 1;
+      const target = stages[next];
+      target.querySelector('.empty')?.remove();
+      target.append(order);
+      if (!origin.querySelector('article')) {
+        const empty = document.createElement('p');
+        empty.className = 'empty';
+        empty.textContent = 'No orders';
+        origin.append(empty);
+      }
+      if (actions[next]) {
+        button.textContent = actions[next];
+        button.focus();
+      } else {
+        button.remove();
+      }
+      home.querySelector('[role="status"]').textContent = order.querySelector('strong').textContent + ' moved to ' + target.querySelector('h2').textContent + '.';
+    });
+  })();
+</script>

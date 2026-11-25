@@ -11,7 +11,7 @@ flowchart LR
     subgraph buggySystem["Buggy"]
         subgraph frontends["Frontends"]
             buggy["Buggy<br/>Flutter app<br/>Browse restaurants, place orders,<br/>pay, and track order status"]
-            portal["Buggy Portal<br/>Flutter web and app<br/>Register restaurants, manage menus,<br/>and update order preparation"]
+            portal["Buggy Portal<br/>React web app<br/>Register restaurants, manage menus,<br/>and update order preparation"]
             delivery["Buggy Delivery Partner<br/>Flutter app<br/>Claim pickups and<br/>update delivery status"]
         end
 
@@ -91,11 +91,11 @@ Each context owns its model and writes to its own data store. This design maps e
 
 | Context | System of record | Model and responsibilities |
 | --- | --- | --- |
-| Restaurant Catalog | `bgy-menu-fb` | Owns the `Restaurant` aggregate and models menus, items, categories, address, operating hours, prices, and dietary tags. Owns staff memberships linking a sign-in identity to a restaurant and its staff permissions. |
-| Order Management | `bgy-order-db` | Owns the `Order` aggregate, its `OrderItem` entities, status, delivery address, and total. At placement, the service checks Catalog for restaurant open status. The order enforces the edit cutoff when preparation starts. |
-| Delivery & Logistics | `bgy-delivery-db` | Owns the `DeliveryJob` aggregate, tracking, delivery status, and ETA. Models `DeliveryPartner` as a separate aggregate because availability, location, and vehicle data persist across jobs. The assignment operation verifies that the partner is available and within 3 km of the pickup before assigning the job. |
+| Restaurant Catalog | `bgy-menu-fb` | Owns the `Restaurant` and `Menu` aggregates. Staff can schedule and publish menus independently. Catalog also owns staff memberships linking a sign-in identity to a restaurant and its staff permissions. |
+| Order Management | `bgy-order-db` | Owns the `Order` aggregate, its `OrderItem` entities, status, delivery address, and total. At placement, the service checks Catalog for restaurant open status. Payment confirmation blocks price-changing edits, and preparation closes the edit window. |
+| Delivery & Logistics | `bgy-delivery-db` | Owns delivery jobs, partners, assignments, delivery status, ETA, and per-job location history. A cancelled job can be replaced with a new job for the same order. Assignment verifies that the partner is available and within 3 km of pickup. |
 | Customer / Identity | `bgy-account-db` | Owns authentication for all three roles and the `Customer` aggregate with `CustomerProfile`, `SavedAddress`, and `ContactNumber`. |
-| Payments | `bgy-payment-db` | Owns payment and payout records, provider references, and transaction status. Razorpay processes payments and payouts. |
+| Payments | `bgy-payment-db` | Owns payments, separately tracked checkout attempts, recipient payouts, provider references, and transaction status. Razorpay processes payments and payouts. |
 
 At checkout, the app submits the selected address as part of the order. Order Management stores its own `DeliveryAddress` snapshot so later edits to a saved address leave the order history intact. Order Management resolves staff access through Catalog using the authenticated identity and the restaurant ID on the order. Logistics owns assignment for both a partner claim and an automatic match and checks eligibility at assignment time.
 

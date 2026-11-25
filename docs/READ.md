@@ -8,6 +8,18 @@ Buggy connects customers who order food, restaurant staff who prepare it, and de
 
 [ADR 003](adr/ADR-003-backend-language-and-framework.md) proposes Java and Spring Boot for the backend services.
 
+[ADR 004](adr/ADR-004-backend-databases.md) selects PostgreSQL and assigns one logical database to each backend service.
+
+[ADR 005](adr/ADR-005-external-payment-sandbox.md) selects Razorpay Test Mode for simulated checkout and payouts.
+
+[ADR 006](adr/ADR-006-buggy-customer-frontend-framework.md) selects Flutter for the Buggy customer app.
+
+[ADR 007](adr/ADR-007-buggy-portal-frontend-framework.md) selects React and TypeScript for Buggy Portal on desktop and mobile browsers.
+
+[ADR 008](adr/ADR-008-buggy-delivery-partner-frontend-framework.md) selects Flutter for Buggy Delivery Partner.
+
+[DDD entity graph](buggy-entity-graph.md) maps the proposed aggregate roots, entities, value objects, and references across the five backend services.
+
 ## Read the diagrams in order
 
 | Level | Diagram | What it helps you understand |

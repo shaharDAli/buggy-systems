@@ -1,0 +1,42 @@
+<main id="buggy-diner" aria-label="Buggy customer home">
+  <header><b>Buggy</b><span><i data-lucide="map-pin"></i> Indiranagar</span></header>
+  <h1>What’s for lunch?</h1>
+  <label><i data-lucide="search"></i><input type="search" placeholder="Search restaurants or cuisines" aria-label="Search restaurants or cuisines"></label>
+  <h2>Nearby restaurants</h2>
+  <details data-search="green tiffin south indian dosa idli"><summary><span class="stamp leaf">GT</span><span><strong>Green Tiffin</strong><small>South Indian · 20–30 min</small></span></summary><p>Masala dosa · ₹110<br>Idli with sambar · ₹75</p></details>
+  <details data-search="oven lane pizza italian margherita mushroom"><summary><span class="stamp clay">OL</span><span><strong>Oven Lane</strong><small>Pizza · 30–40 min</small></span></summary><p>Margherita · ₹240<br>Mushroom pizza · ₹290</p></details>
+  <details data-search="rice house bowls vegetarian chicken"><summary><span class="stamp gold">RH</span><span><strong>Rice House</strong><small>Rice bowls · 25–35 min</small></span></summary><p>Vegetable bowl · ₹145<br>Chicken bowl · ₹185</p></details>
+  <p role="status" hidden>No restaurants match your search.</p>
+</main>
+<style>
+  #buggy-diner { box-sizing:border-box; max-width:425px; margin:auto; padding:24px; border-radius:22px; background:light-dark(#faf7f0,#222723); color:light-dark(#173e33,#edf5eb); font:16px/1.45 system-ui,sans-serif; }
+  #buggy-diner header,#buggy-diner header span,#buggy-diner label,#buggy-diner summary { display:flex; align-items:center; gap:10px; }
+  #buggy-diner header { justify-content:space-between; }
+  #buggy-diner header b { font-size:26px; letter-spacing:-.07em; }
+  #buggy-diner header span { font-size:14px; }
+  #buggy-diner h1 { font:600 clamp(33px,7vw,46px)/1.05 Georgia,serif; margin:34px 0 18px; color:inherit; }
+  #buggy-diner label { background:light-dark(#fff,#303a34); padding:0 12px; border:1px solid #83988b; border-radius:12px; }
+  #buggy-diner input { background:transparent; color:inherit; border:0; width:100%; min-width:0; height:46px; font:inherit; }
+  #buggy-diner h2 { margin:28px 0 5px; font:650 19px/1.2 system-ui; color:inherit; }
+  #buggy-diner details { border-bottom:1px solid light-dark(#d9dace,#435045); }
+  #buggy-diner summary { padding:13px 0; cursor:pointer; }
+  #buggy-diner summary::after { content:'⌄'; margin-left:auto; }
+  #buggy-diner details[open] summary::after { transform:rotate(180deg); }
+  #buggy-diner small { display:block; font-size:13px; }
+  #buggy-diner .stamp { display:grid; place-items:center; width:50px; height:50px; flex:none; border-radius:14px; font:bold italic 22px Georgia; }
+  #buggy-diner .leaf { background:#dbeac8; color:#264932; }
+  #buggy-diner .clay { background:#f3d2bf; color:#6c3225; }
+  #buggy-diner .gold { background:#f2e1aa; color:#634916; }
+  #buggy-diner p { margin:0; padding:10px 0 16px; color:inherit; }
+</style>
+<script>
+  (() => {
+    const home = document.getElementById('buggy-diner');
+    const restaurants = [...home.querySelectorAll('details')];
+    home.querySelector('input').addEventListener('input', event => {
+      const query = event.target.value.trim().toLowerCase();
+      for (const restaurant of restaurants) restaurant.hidden = !restaurant.dataset.search.includes(query);
+      home.querySelector('[role="status"]').hidden = restaurants.some(restaurant => !restaurant.hidden);
+    });
+  })();
+</script>

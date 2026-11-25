@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: bgy-rest-catalog-service
+  autoconfigure:
+    exclude: org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration
+
+server:
+  port: ${PORT:8082}
+
+management:
+  otlp:
+    metrics:
+      export:
+        enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "!postgres"
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+  flyway:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+
+management:
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: readinessState,db
