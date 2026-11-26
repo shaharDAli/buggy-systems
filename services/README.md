@@ -61,7 +61,7 @@ $env:SPRING_DATASOURCE_URL = 'jdbc:postgresql://127.0.0.1:5433/bgy-order-db'
 $env:SPRING_DATASOURCE_USERNAME = 'bgy_order'
 $env:SPRING_DATASOURCE_PASSWORD = Read-Host 'Order database password' -MaskInput
 mvn -f services/bgy-order-service/pom.xml verify
-java -jar services/bgy-order-service/target/bgy-order-service-0.1.0-SNAPSHOT.jar
+java -jar services/bgy-order-service/target/bgy-order-service-0.1.0.jar
 ```
 
 Start the other services in separate terminals with the database, login, password, and service directory from the table. Each service applies `V1__initial_schema.sql` from its own `src/main/resources/db/migration` directory at startup. Check the readiness URL on its local port and inspect `flyway_schema_history` for a successful version `1`. For example, verify the Order migration from another terminal.

@@ -269,7 +269,7 @@ Buggy stores phone numbers, addresses, and delivery partner location history, wh
 
 The Restaurant Catalog database was written as `bgy-menu-fb`, a typo for `-db`. The other four databases end in `-db`.
 
-**Decision** — Renamed to `bgy-menu-db` on 2026-11-25 in ADR 002, ADR 004, the container diagram, the entity graph, and the services README. No code or configuration referenced the old name, and the database had not been provisioned.
+**Decision** — Renamed to `bgy-menu-db` on 2026-11-25 in ADR 002, ADR 004, the container diagram, the entity graph, and the services README. The local stack added later still used the old name; `compose.yaml` and `infra/postgres/10-provision-databases.sql` were fixed on 2026-11-26. Recreate the local volume (`docker compose down -v`) to get the new name.
 
 ---
 

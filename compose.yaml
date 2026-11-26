@@ -61,7 +61,7 @@ services:
     environment:
       PORT: "8082"
       SPRING_PROFILES_ACTIVE: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bgy-menu-fb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bgy-menu-db
       SPRING_DATASOURCE_USERNAME: bgy_catalog
       SPRING_DATASOURCE_PASSWORD: ${BUGGY_CATALOG_DB_PASSWORD:?Set BUGGY_CATALOG_DB_PASSWORD}
     ports:

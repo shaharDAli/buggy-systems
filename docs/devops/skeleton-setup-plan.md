@@ -34,9 +34,9 @@ Do this before creating anything that costs money.
 
 ### 1.1 Database
 
-- [ ] Run PostgreSQL in a Docker container.
-- [ ] Create the five databases: `bgy-account-db`, `bgy-menu-db`, `bgy-order-db`, `bgy-payment-db`, `bgy-delivery-db`.
-- [ ] Create one database user per service, allowed to reach only its own database ([ADR 004](../adr/ADR-004-backend-databases.md)).
+- [x] Run PostgreSQL in a Docker container.
+- [x] Create the five databases: `bgy-account-db`, `bgy-menu-db`, `bgy-order-db`, `bgy-payment-db`, `bgy-delivery-db`.
+- [x] Create one database user per service, allowed to reach only its own database ([ADR 004](../adr/ADR-004-backend-databases.md)).
 
 **Done when** — the account user can connect to `bgy-account-db` and is refused on `bgy-order-db`.
 
@@ -49,15 +49,15 @@ Do this before creating anything that costs money.
 
 ### 1.3 Account service in a container
 
-- [ ] Write a Dockerfile for the account service.
-- [ ] Build the image and run it, passing the database settings as environment variables.
+- [x] Write a Dockerfile for the account service.
+- [x] Build the image and run it, passing the database settings as environment variables.
 
 **Done when** — the container reaches the database and the readiness check returns `UP`.
 
 ### 1.4 All services together
 
-- [ ] Write Dockerfiles for the other four services.
-- [ ] Write a `docker-compose.yml` with PostgreSQL and all five services.
+- [x] Write Dockerfiles for the other four services.
+- [x] Write a `docker-compose.yml` with PostgreSQL and all five services (`compose.yaml`, one shared `services/Dockerfile`).
 - [ ] Optional: add Caddy as the local gateway ([API gateway](api-gateway.md)).
 
 **Done when** — `docker compose up` starts everything and all five readiness checks return `UP`.

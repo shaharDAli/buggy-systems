@@ -14,12 +14,12 @@ CREATE ROLE bgy_logistics LOGIN PASSWORD :'logistics_password';
 COMMIT;
 
 CREATE DATABASE "bgy-account-db" OWNER bgy_account;
-CREATE DATABASE "bgy-menu-fb" OWNER bgy_catalog;
+CREATE DATABASE "bgy-menu-db" OWNER bgy_catalog;
 CREATE DATABASE "bgy-order-db" OWNER bgy_order;
 CREATE DATABASE "bgy-payment-db" OWNER bgy_payment;
 CREATE DATABASE "bgy-delivery-db" OWNER bgy_logistics;
 
 BEGIN;
-REVOKE CONNECT, TEMPORARY ON DATABASE "bgy-account-db", "bgy-menu-fb", "bgy-order-db",
+REVOKE CONNECT, TEMPORARY ON DATABASE "bgy-account-db", "bgy-menu-db", "bgy-order-db",
     "bgy-payment-db", "bgy-delivery-db", postgres, template1 FROM PUBLIC;
 COMMIT;
