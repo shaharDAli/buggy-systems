@@ -33,3 +33,16 @@ spring:
       - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
   flyway:
     enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+
+management:
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: readinessState,db

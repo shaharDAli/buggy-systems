@@ -44,17 +44,17 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    Restaurant["Restaurant · aggregate root"] -->|owns| Menu["Menu · entity"]
-    Restaurant -->|owns zero or more| Membership["StaffMembership · entity"]
+    Restaurant["Restaurant · aggregate root"] -->|owns zero or more| Membership["StaffMembership · entity"]
     Restaurant -->|contains| Hours["OperatingHours · value object"]
+    Menu["Menu · aggregate root"] -->|restaurantId| Restaurant
     Menu -->|owns zero or more| Item["MenuItem · entity"]
     Menu -->|owns zero or more| Category["MenuCategory · entity"]
     Item -->|categoryId when categorized| Category
     Item -->|contains| Price["Money · value object"]
 ```
 
-- `Restaurant` owns staff grants and catalog updates. A staff grant belongs to one restaurant and authorizes operations for that restaurant. The proposed model uses one membership per restaurant and identity, with permissions on the membership.
-- Give items and categories stable IDs so staff can rename or edit them while retaining their identity. Under the proposed boundary, a category assigned to an item must belong to the same menu. Restaurant opening hours and item availability support order placement checks.
+- `Restaurant` owns restaurant details, operating hours, and staff grants. A staff grant belongs to one restaurant and authorizes operations for that restaurant. The proposed model uses one membership per restaurant and identity, with permissions on the membership.
+- `Menu` has its own lifecycle. Authorized staff can edit, schedule, and publish a menu independently of restaurant updates. A menu owns its items and categories, and a category assigned to an item must belong to that same menu. Restaurant opening hours and the published menu's item availability support order placement checks.
 
 ## Order Management
 
@@ -69,7 +69,7 @@ flowchart TB
 ```
 
 - Placement starts an order in `PendingPayment` with at least one item. Every item has a positive quantity and belongs to the selected restaurant. The checkout address and item prices are captured so later account or catalog edits preserve order history.
-- `Order` controls status changes. Payment confirmation advances `PendingPayment` to `Paid`. Preparation closes the order edit window. Logistics progress precedes the `OutForDelivery → Delivered` transition.
+- `Order` controls status changes. Payment confirmation advances `PendingPayment` to `Paid`. Staff and customers cannot make price-changing edits once payment is confirmed, including before preparation. Preparation closes the edit window for any other changes. Logistics progress precedes the `OutForDelivery → Delivered` transition.
 - Save `Delivered` and its payout request outbox entry in the same local transaction. The outbox is a persistence mechanism, so the aggregate graph focuses on the business objects.
 
 ## Payments
@@ -78,14 +78,16 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    Payment["Payment · aggregate root"] -->|owns provider checkout and result references| Checkout["ProviderCheckoutReference · value object"]
-    Payment -->|contains checkout amount| Amount["Money · value object"]
+    Payment["Payment · aggregate root"] -->|owns zero or more| Attempt["PaymentAttempt · entity"]
+    Attempt -->|owns provider checkout and result references| Checkout["ProviderCheckoutReference · value object"]
+    Attempt -->|contains checkout amount| Amount["Money · value object"]
     Payout["Payout · aggregate root"] -->|contains recipient type and ID| Recipient["PayoutRecipient · value object"]
     Payout -->|owns transfer reference when available| Transfer["ProviderTransferReference · value object"]
     Payout -->|contains payout amount| Amount
 ```
 
-- `Payment` owns the checkout amount, provider references, and payment status for an order. Deduplicate provider webhook events and send Order Management the confirmed result. A failed checkout leaves the order in `PendingPayment`.
+- The model uses one `Payment` aggregate per order. Each checkout try gets its own `PaymentAttemptId`, amount, status, and provider references as they become available. Starting a new try creates an attempt. Repeating the same start request with the same idempotency key returns the existing attempt.
+- `Payment` owns the overall payment status. Process verified webhooks against the matching attempt and deduplicate by provider event ID. A failed attempt leaves an unpaid order in `PendingPayment`. The first confirmed attempt marks the payment as paid and triggers confirmation to Order Management. A later failure leaves that success in place, and any additional confirmed charge goes to reconciliation.
 - `Payout` owns the status of one recipient’s transfer independently. The same delivery payout request can be retried and must yield one restaurant payout and one delivery partner payout. Use `(orderId, recipientType)` as the proposed business key for that flow. Reconcile an ambiguous provider result before retrying a transfer.
 
 ## Delivery & Logistics
@@ -98,18 +100,12 @@ flowchart TB
     Job -->|stores pickup and drop-off| Stop["DeliveryStop · value object"]
     Partner -->|owns vehicle records| Vehicle["Vehicle · entity"]
     Partner -->|stores latest position| Location["GeoPoint · value object"]
+    Sample["DeliveryLocationSample · append-only aggregate root"] -->|deliveryJobId| Job
+    Sample -->|recorded partnerId| Partner
+    Sample -->|captures position| Location
 ```
 
 - A job is created for pickup when food is nearly ready. Assignment uses the same eligibility rule for partner claims and automatic matches. The partner must be available and within 3 km of pickup. An atomic claim lets only one partner win a concurrent claim for that job.
-- `DeliveryJob` owns assignment and delivery status. `DeliveryPartner` owns availability and the latest position across jobs. Logistics reports progress and completion to Order Management, which owns the order status.
+- `DeliveryJob` owns assignment and delivery status. Logistics can create a replacement with a new `DeliveryJobId` after cancellation. An order can have multiple historical jobs and at most one active job. Keep the cancelled job and its tracking history under its original ID.
+- `DeliveryPartner` owns availability and the latest position across jobs. Append a timestamped `DeliveryLocationSample` for the assigned partner under the specific job ID. Each sample can be stored independently of the job's state changes, so tracking updates do not grow the `DeliveryJob` aggregate. Logistics reports progress and completion to Order Management, which owns the order status.
 - The proposed model gives vehicle records stable IDs under a partner. If vehicles are managed or reassigned independently, their aggregate boundary should follow that workflow.
-
-## Decisions to confirm before designing the schema
-
-| Question | Why it affects the model |
-| --- | --- |
-| Can staff or customers make price-changing edits after payment and before preparation? | The rule determines whether edits need a payment adjustment workflow and when order item snapshots become fixed. |
-| Do staff manage menus independently, such as scheduling or publishing them separately? | That workflow may justify a separate `Menu` aggregate. The graph currently places menus and memberships under `Restaurant`. |
-| Does retrying checkout reuse the same payment record or create separately tracked attempts? | This determines payment cardinality and how provider references and retries are modeled. |
-| Can the logistics service replace a cancelled job for the same order? | This determines whether `orderId` identifies one job over its lifetime or only one active job at a time. |
-| Does Logistics need to retain location history per job? | A history requirement calls for timestamped observations tied to the job in addition to the partner's latest position. |

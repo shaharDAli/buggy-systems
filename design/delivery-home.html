@@ -1,0 +1,49 @@
+<main id="buggy-rider" aria-label="Delivery partner home">
+  <header><b>Buggy Delivery Partner</b></header>
+  <h1>Available pickups</h1>
+  <article>
+    <small>Order #1040</small>
+    <ol><li><span>Pickup</span><strong>Green Tiffin</strong><p>12 Market Road</p></li>
+      <li><span>Drop-off</span><strong>42 Lake Street</strong><p>Indiranagar</p></li></ol>
+    <button type="button">Claim pickup</button>
+  </article>
+  <p class="status" role="status"></p>
+</main>
+<style>
+  #buggy-rider { box-sizing:border-box; max-width:425px; margin:auto; padding:24px; border-radius:22px; background:light-dark(#e9f1ec,#16241e); color:light-dark(#183c2e,#e2f4e6); font:16px/1.45 system-ui,sans-serif; }
+  #buggy-rider header { border-bottom:1px solid light-dark(#c0d2c4,#405948); padding-bottom:15px; }
+  #buggy-rider header b { font-size:18px; letter-spacing:-.03em; }
+  #buggy-rider h1 { margin:24px 0 16px; font:720 32px/1.1 system-ui; color:inherit; letter-spacing:-.05em; }
+  #buggy-rider article { border-radius:16px; background:light-dark(#fff,#24362b); padding:20px; }
+  #buggy-rider small { font-weight:600; }
+  #buggy-rider ol { list-style:none; margin:18px 0; padding:0; }
+  #buggy-rider li { position:relative; padding-left:26px; }
+  #buggy-rider li:first-child { padding-bottom:24px; }
+  #buggy-rider li:first-child::after { content:''; position:absolute; top:12px; bottom:-6px; left:5px; border-left:2px dotted #87a999; }
+  #buggy-rider li::before { content:''; position:absolute; top:6px; left:0; width:12px; height:12px; border-radius:50%; background:#47806c; }
+  #buggy-rider li:last-child::before { border-radius:3px; }
+  #buggy-rider li span { display:block; font-size:13px; }
+  #buggy-rider li strong { font-size:20px; }
+  #buggy-rider p { margin:0; color:inherit; }
+  #buggy-rider button { width:100%; min-height:48px; border:0; border-radius:10px; background:#125544; color:white; font:650 16px system-ui; cursor:pointer; }
+  #buggy-rider .status:not(:empty) { margin-top:14px; }
+</style>
+<script>
+  (() => {
+    const home = document.getElementById('buggy-rider');
+    const button = home.querySelector('button');
+    const steps = [
+      ['Your pickup', 'Confirm pickup', 'Pickup claimed. Collect order #1040 at Green Tiffin.'],
+      ['Your delivery', 'Mark delivered', 'Order collected. Deliver to 42 Lake Street.'],
+      ['Available pickups', '', 'Order #1040 delivered. No more pickups available.'],
+    ];
+    let step = 0;
+    button.addEventListener('click', () => {
+      const [heading, action, message] = steps[step++];
+      home.querySelector('h1').textContent = heading;
+      home.querySelector('[role="status"]').textContent = message;
+      if (action) button.textContent = action;
+      else home.querySelector('article').hidden = true;
+    });
+  })();
+</script>

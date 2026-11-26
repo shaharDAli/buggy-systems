@@ -1,0 +1,116 @@
+name: buggy
+
+x-backend: &backend
+  depends_on:
+    postgres:
+      condition: service_healthy
+  healthcheck:
+    test: ["CMD-SHELL", "curl --fail --silent --show-error http://127.0.0.1:$${PORT}/actuator/health/readiness"]
+    interval: 5s
+    timeout: 3s
+    start_period: 30s
+    retries: 12
+
+x-backend-build: &backend-build
+  context: ./services
+  dockerfile: Dockerfile
+
+services:
+  postgres: 
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${BUGGY_POSTGRES_ADMIN_PASSWORD:?Set BUGGY_POSTGRES_ADMIN_PASSWORD}
+      BUGGY_ACCOUNT_DB_PASSWORD: ${BUGGY_ACCOUNT_DB_PASSWORD:?Set BUGGY_ACCOUNT_DB_PASSWORD}
+      BUGGY_CATALOG_DB_PASSWORD: ${BUGGY_CATALOG_DB_PASSWORD:?Set BUGGY_CATALOG_DB_PASSWORD}
+      BUGGY_ORDER_DB_PASSWORD: ${BUGGY_ORDER_DB_PASSWORD:?Set BUGGY_ORDER_DB_PASSWORD}
+      BUGGY_PAYMENT_DB_PASSWORD: ${BUGGY_PAYMENT_DB_PASSWORD:?Set BUGGY_PAYMENT_DB_PASSWORD}
+      BUGGY_LOGISTICS_DB_PASSWORD: ${BUGGY_LOGISTICS_DB_PASSWORD:?Set BUGGY_LOGISTICS_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:${BUGGY_POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infra/postgres/10-provision-databases.sql:/docker-entrypoint-initdb.d/10-provision-databases.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  bgy-account-service:
+    <<: *backend
+    build:
+      <<: *backend-build
+      args:
+        SERVICE: bgy-account-service
+    environment:
+      PORT: "8081"
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bgy-account-db
+      SPRING_DATASOURCE_USERNAME: bgy_account
+      SPRING_DATASOURCE_PASSWORD: ${BUGGY_ACCOUNT_DB_PASSWORD:?Set BUGGY_ACCOUNT_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:8081:8081"
+
+  bgy-rest-catalog-service:
+    <<: *backend
+    build:
+      <<: *backend-build
+      args:
+        SERVICE: bgy-rest-catalog-service
+    environment:
+      PORT: "8082"
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bgy-menu-fb
+      SPRING_DATASOURCE_USERNAME: bgy_catalog
+      SPRING_DATASOURCE_PASSWORD: ${BUGGY_CATALOG_DB_PASSWORD:?Set BUGGY_CATALOG_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:8082:8082"
+
+  bgy-order-service:
+    <<: *backend
+    build:
+      <<: *backend-build
+      args:
+        SERVICE: bgy-order-service
+    environment:
+      PORT: "8083"
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bgy-order-db
+      SPRING_DATASOURCE_USERNAME: bgy_order
+      SPRING_DATASOURCE_PASSWORD: ${BUGGY_ORDER_DB_PASSWORD:?Set BUGGY_ORDER_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:8083:8083"
+
+  bgy-payment-service:
+    <<: *backend
+    build:
+      <<: *backend-build
+      args:
+        SERVICE: bgy-payment-service
+    environment:
+      PORT: "8084"
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bgy-payment-db
+      SPRING_DATASOURCE_USERNAME: bgy_payment
+      SPRING_DATASOURCE_PASSWORD: ${BUGGY_PAYMENT_DB_PASSWORD:?Set BUGGY_PAYMENT_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:8084:8084"
+
+  bgy-logistics-service:
+    <<: *backend
+    build:
+      <<: *backend-build
+      args:
+        SERVICE: bgy-logistics-service
+    environment:
+      PORT: "8085"
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bgy-delivery-db
+      SPRING_DATASOURCE_USERNAME: bgy_logistics
+      SPRING_DATASOURCE_PASSWORD: ${BUGGY_LOGISTICS_DB_PASSWORD:?Set BUGGY_LOGISTICS_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:8085:8085"
+
+volumes:
+  postgres-data:
