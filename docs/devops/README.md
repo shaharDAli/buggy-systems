@@ -6,6 +6,7 @@ This folder explains how Buggy is built, deployed, and run. Architecture decisio
 | --- | --- |
 | [AWS hosting](aws-hosting.md) | Where the services, databases, secrets, and Jenkins run on AWS, what each AWS service does, and how code moves from a push to a running service. |
 | [API gateway](api-gateway.md) | The single entry point for the apps and Razorpay webhooks: routing, HTTPS, rate limiting, CORS, and how to build it in AWS and locally. |
+| [Walking skeleton setup plan](skeleton-setup-plan.md) | A step-by-step checklist for setting up the local environment, Jenkins, and AWS by hand for release 0.1.0. |
 
 ## Related decisions
 
