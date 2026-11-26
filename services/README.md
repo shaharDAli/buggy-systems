@@ -5,7 +5,7 @@ The five services follow [ADR 001](../docs/adr/ADR-001-backend-architecture.md) 
 | Service | Local port | Database | Login | Local password variable |
 | --- | --- | --- | --- | --- |
 | [Customer / Identity](bgy-account-service) | 8081 | `bgy-account-db` | `bgy_account` | `BUGGY_ACCOUNT_DB_PASSWORD` |
-| [Restaurant Catalog](bgy-rest-catalog-service) | 8082 | `bgy-menu-fb` | `bgy_catalog` | `BUGGY_CATALOG_DB_PASSWORD` |
+| [Restaurant Catalog](bgy-rest-catalog-service) | 8082 | `bgy-menu-db` | `bgy_catalog` | `BUGGY_CATALOG_DB_PASSWORD` |
 | [Order Management](bgy-order-service) | 8083 | `bgy-order-db` | `bgy_order` | `BUGGY_ORDER_DB_PASSWORD` |
 | [Payments](bgy-payment-service) | 8084 | `bgy-payment-db` | `bgy_payment` | `BUGGY_PAYMENT_DB_PASSWORD` |
 | [Delivery & Logistics](bgy-logistics-service) | 8085 | `bgy-delivery-db` | `bgy_logistics` | `BUGGY_LOGISTICS_DB_PASSWORD` |
@@ -31,7 +31,7 @@ With JDK 21 and Maven 3.9 installed, run these commands from the repository root
 
 ```sh
 mvn -f services/bgy-order-service/pom.xml verify
-java -jar services/bgy-order-service/target/bgy-order-service-0.1.0-SNAPSHOT.jar
+java -jar services/bgy-order-service/target/bgy-order-service-0.1.0.jar
 ```
 
 Each service exposes `GET /actuator/health`, `GET /actuator/health/liveness`, and `GET /actuator/health/readiness`. The `postgres` profile adds the database check to readiness. The versioned OpenAPI document at `/openapi/v1.yaml` describes those probes. Local development uses HTTP. Deploy behind an HTTPS ingress for external access. Spring Security allows GET requests to the probes and document and denies other requests.

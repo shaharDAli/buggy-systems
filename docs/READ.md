@@ -18,7 +18,17 @@ Buggy connects customers who order food, restaurant staff who prepare it, and de
 
 [ADR 008](adr/ADR-008-buggy-delivery-partner-frontend-framework.md) selects Flutter for Buggy Delivery Partner.
 
+[ADR 009](adr/ADR-009-ci-pipeline.md) selects Jenkins to build and test the backend services and the three frontends.
+
+[ADR 011](adr/ADR-011-release-versioning.md) gives all services and frontends one Semantic Versioning release version, tagged on `main`.
+
+[DevOps](devops/README.md) explains how Buggy is built, deployed, and hosted on AWS.
+
+[Service communication and caching](service-communication-and-caching.md) proposes how services call each other, how messages survive failures, and what Buggy caches.
+
 [DDD entity graph](buggy-entity-graph.md) maps the proposed aggregate roots, entities, value objects, and references across the five backend services.
+
+[Account service package layout](c4-diagrams/buggy-account-service-layout.md) proposes how `bgy-account-service` separates the identity model, the customer model, and Spring Authorization Server.
 
 ## Read the diagrams in order
 
